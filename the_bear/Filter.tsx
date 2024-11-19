@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList, Picker } from 'react-native';
+import { View, Text, Button, StyleSheet, FlatList, Picker, ScrollView } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { MenuItem } from './types';
 
@@ -21,7 +21,7 @@ export default function FilterScreen({ route }: { route: FilterRouteProp }) {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Text style={styles.heading}>Filter Menu Items</Text>
       <Text>Select Course:</Text>
       <Picker
@@ -37,6 +37,7 @@ export default function FilterScreen({ route }: { route: FilterRouteProp }) {
 
       <Button title="Apply Filter" onPress={handleFilter} />
 
+      {/* Set a fixed height for FlatList */}
       <FlatList
         data={filteredItems}
         keyExtractor={(item) => item.id}
@@ -47,8 +48,9 @@ export default function FilterScreen({ route }: { route: FilterRouteProp }) {
             <Text>Course: {item.course}</Text>
           </View>
         )}
+        style={styles.flatList} // Apply style for fixed height
       />
-    </View>
+    </ScrollView>
   );
 }
 
@@ -78,5 +80,8 @@ const styles = StyleSheet.create({
   menuItemText: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  flatList: {
+    height: 400 
   },
 });
