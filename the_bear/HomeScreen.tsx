@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  Button,
-  Image,
-  TouchableHighlight,
-  FlatList,
-} from 'react-native';
+  StyleSheet, Text, View, Button, Image, TouchableHighlight, FlatList, } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MenuItem } from './types';
