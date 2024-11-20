@@ -37,7 +37,6 @@ export default function FilterScreen({ route }: { route: FilterRouteProp }) {
 
       <Button title="Apply Filter" onPress={handleFilter} />
 
-      {/* Set a fixed height for FlatList */}
       <FlatList
         data={filteredItems}
         keyExtractor={(item) => item.id}
@@ -48,7 +47,7 @@ export default function FilterScreen({ route }: { route: FilterRouteProp }) {
             <Text>Course: {item.course}</Text>
           </View>
         )}
-        style={styles.flatList} // Apply style for fixed height
+        style={styles.flatList} 
       />
     </ScrollView>
   );
