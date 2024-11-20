@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button, Image, TouchableHighlight, TouchableWithoutFeedback, Keyboard, FlatList } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  Image,
+  TouchableHighlight,
+  FlatList,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MenuItem } from './types';
-
 
 const preListedMenuItems: MenuItem[] = [
   { id: '1', name: 'Tomato Soup', description: 'A delicious tomato-based soup', price: '5.99', course: 'starters' },
@@ -12,7 +18,7 @@ const preListedMenuItems: MenuItem[] = [
   { id: '3', name: 'Grilled Chicken', description: 'Juicy grilled chicken served with veggies', price: '10.99', course: 'mains' },
   { id: '4', name: 'Steak with Fries', description: 'Perfectly cooked steak served with crispy fries', price: '15.99', course: 'mains' },
   { id: '5', name: 'Chocolate Cake', description: 'Rich and moist chocolate cake with frosting', price: '6.99', course: 'desserts' },
-  { id: '6', name: 'Cheesecake', description: 'Creamy cheesecake with a buttery crust', price: '7.49', course: 'desserts' }
+  { id: '6', name: 'Cheesecake', description: 'Creamy cheesecake with a buttery crust', price: '7.49', course: 'desserts' },
 ];
 
 type RootStackParamList = {
@@ -24,21 +30,19 @@ type RootStackParamList = {
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 export default function HomeScreen() {
-  const [menuItems, setMenuItems] = useState<MenuItem[]>(preListedMenuItems); 
-  const [filteredItems, setFilteredItems] = useState<MenuItem[]>(preListedMenuItems);  
+  const [menuItems, setMenuItems] = useState<MenuItem[]>(preListedMenuItems);
+  const [filteredItems, setFilteredItems] = useState<MenuItem[]>(preListedMenuItems);
 
   const addMenuItem = (item: MenuItem) => {
-    setMenuItems((prevItems) => {
-      const newItems = [...prevItems, { ...item, id: Math.random().toString() }];
-      setFilteredItems(newItems); 
-      return newItems;
-    });
+    const newItems = [...menuItems, { ...item, id: Math.random().toString() }];
+    setMenuItems(newItems);
+    setFilteredItems(newItems);
   };
 
   const removeMenuItem = (id: string) => {
     const updatedItems = menuItems.filter((item) => item.id !== id);
     setMenuItems(updatedItems);
-    setFilteredItems(updatedItems); 
+    setFilteredItems(updatedItems);
   };
 
   const navigation = useNavigation<HomeScreenNavigationProp>();
@@ -73,29 +77,25 @@ export default function HomeScreen() {
   );
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <View style={styles.flatListContainer}>
-          <FlatList
-            data={filteredItems}
-            keyExtractor={(item) => item.id}
-            ListHeaderComponent={renderHeader}
-            ListFooterComponent={renderFooter}
-            renderItem={({ item }) => (
-              <View style={styles.menuItem}>
-                <Text style={styles.menuItemText}>{item.name} - ${item.price}</Text>
-                <Text>{item.description}</Text>
-                <Text>Course: {item.course}</Text>
-                <Button title="Remove" onPress={() => removeMenuItem(item.id)} />
-              </View>
-            )}
-            contentContainerStyle={styles.flatListContentContainer}
-            keyboardShouldPersistTaps="handled"
-          />
-        </View>
-        <StatusBar style="auto" />
-      </View>
-    </TouchableWithoutFeedback>
+    <View style={styles.container}>
+      <FlatList
+        data={filteredItems}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <View style={styles.menuItem}>
+            <Text style={styles.menuItemText}>{item.name} - ${item.price}</Text>
+            <Text>{item.description}</Text>
+            <Text>Course: {item.course}</Text>
+            <Button title="Remove" onPress={() => removeMenuItem(item.id)} />
+          </View>
+        )}
+        ListHeaderComponent={renderHeader}
+        ListFooterComponent={renderFooter}
+        style={styles.flatList} // Fixed height
+        contentContainerStyle={styles.flatListContentContainer}
+        keyboardShouldPersistTaps="handled"
+      />
+    </View>
   );
 }
 
@@ -162,12 +162,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginVertical: 5,
   },
-  flatListContainer: {
-    height: '45%', 
-    overflow: 'scroll', 
+  flatList: {
+    height: 400, // Fixed height
   },
   flatListContentContainer: {
     paddingBottom: 10,
-    flexGrow: 1, 
   },
 });
